@@ -5,7 +5,7 @@ $(function(){
     atualizaTamanhoFrase();
     inicializaContador();
     inicializaCronometro();
-    compararDigiitacao();
+    compararDigitacao();
     $('#botao-reiniciar').click(reiniciaJogo);
 });
 
@@ -38,7 +38,6 @@ function inicializaCronometro(){
                 finalizaJogo();
             }  
         }, 1000);
-        console.log(tempoRestante);
     });
 }
 
@@ -49,13 +48,13 @@ function finalizaJogo(){
     inserePlacar();
 }
 
-function compararDigiitacao(){
+function compararDigitacao(){
     let frase = $('.frase').text();
     campo.on('input', function(){
         let digitado = campo.val();
         let comparavel = frase.substr(0, digitado.length);
-        console.log(digitado);
-        console.log(comparavel);
+        //console.log(digitado);
+        //console.log(comparavel);
         if(digitado == comparavel){
             campo.addClass('campo-correto');
             campo.removeClass('campo-errado');
@@ -78,18 +77,3 @@ function reiniciaJogo(){
         $('#tempo-digitacao').text(tempoInicial);
         inicializaCronometro(); 
 }
-
-function inserePlacar(){
-    let tabela = $('.placar').find('tbody');
-    var usuario = 'Antonio';
-    let numPalavras = $('#contador-palavras').text();
-
-    let linha = '<tr>'+ 
-                        '<td>'+ usuario +'</td>'+
-                        '<td>'+ numPalavras +'</td>'+
-                '</tr>'
-    tabela.prepend(linha);
-}
-
-
-
