@@ -1,3 +1,5 @@
+$("#botao-placar").click(monstraPlacar)
+
 function inserePlacar(){
     let tabela = $('.placar').find('tbody');
     var usuario = 'Antonio';
@@ -5,6 +7,16 @@ function inserePlacar(){
     let linha = novaLinha(usuario, numPalavras);
     linha.find('.botao-remover').click(removeLinha);
     tabela.prepend(linha);
+    $(".placar").slideDown();
+    scrollPlacar();
+}
+
+function scrollPlacar(){
+    let posicaoPlacar = $('.placar').offset().top;
+    console.log(posicaoPlacar);
+    $('body, html').animate({
+        scrollTop: posicaoPlacar+"px"
+    },1000);
 }
 
 function novaLinha(usuario, numPalavras){
@@ -24,5 +36,13 @@ function novaLinha(usuario, numPalavras){
 
 function removeLinha(){
     event.preventDefault();
-    $(this).parent().parent().remove();
+    let linha = $(this).parent().parent();
+    linha.fadeOut(1000);
+    setTimeout(function(){
+        linha.remove();
+    },1000);
+}
+
+function monstraPlacar(){
+    $(".placar").stop().slideToggle();
 }

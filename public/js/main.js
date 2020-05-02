@@ -67,7 +67,7 @@ function compararDigitacao(){
 }
 
 function reiniciaJogo(){
-        campo.removeClass('campo-desativado');
+        campo.toggleClass('campo-desativado');
         campo.removeClass('campo-errado');
         campo.removeClass('campo.errado');
         campo.attr('disabled', false);
