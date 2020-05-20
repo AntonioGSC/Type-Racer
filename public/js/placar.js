@@ -1,8 +1,9 @@
-$("#botao-placar").click(monstraPlacar)
+$("#botao-placar").click(monstraPlacar);
+$("#botao-sync").click(sincronizaPlacar);
 
 function inserePlacar(){
     let tabela = $('.placar').find('tbody');
-    var usuario = 'Antonio';
+    var usuario = $("#usuarios").val();
     let numPalavras = $('#contador-palavras').text();
     let linha = novaLinha(usuario, numPalavras);
     linha.find('.botao-remover').click(removeLinha);
@@ -45,4 +46,44 @@ function removeLinha(){
 
 function monstraPlacar(){
     $(".placar").stop().slideToggle();
+}
+
+function sincronizaPlacar(){
+    let placar = [];
+    let linhas = $("tbody > tr");
+    linhas.each(function(){
+        let usuario = $(this).find("td:nth-child(1)").text();
+        let palavras = $(this).find("td:nth-child(2)").text();
+        let score = {
+            usuario: usuario,
+            pontos: palavras
+        };
+
+        placar.push(score);
+    });
+    let dados = {
+        placar: placar
+    };
+    $.post("http://localhost:3000/placar", dados, function(){
+        console.log("Placar salvo no servidor");
+        $('.tooltip').tooltipster('open');
+    })
+    .fail(function(){
+        $('.tooltip').tooltipster('open').tooltipster('content', 'Falha ao sincronizar');
+    })
+    .always(function(){
+        setTimeout(function(){
+            $('.tooltip').tooltipster('close');
+        },1200)   
+    });
+}
+
+function atualizaPlacar(){
+    $.get("http://localhost:3000/placar", function(data){
+        $(data).each(function(){
+            let linha = novaLinha(this.usuario, this.pontos);
+            linha.find('.botao-remover').click(removeLinha);
+            $("tbody").append(linha);
+        });
+    });
 }
